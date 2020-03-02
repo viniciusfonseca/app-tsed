@@ -1,4 +1,4 @@
-import { GlobalAcceptMimesMiddleware, ServerLoader, ServerSettings } from "@tsed/common";
+import { GlobalAcceptMimesMiddleware, ServerLoader, ServerSettings, OnInit } from "@tsed/common";
 import * as bodyParser from "body-parser";
 import * as compress from "compression";
 import * as cookieParser from "cookie-parser";
@@ -8,14 +8,14 @@ const rootDir = __dirname;
 
 @ServerSettings({
     rootDir,
+    mount: {
+        "/": `${rootDir}/controllers/**/*.ts`
+    },
     acceptMimes: ["application/json"]
 })
 export class Server extends ServerLoader {
-    /**
-     * This method let you configure the express middleware required by your application to works.
-     * @returns {Server}
-     */
-    public $beforeRoutesInit(): void | Promise<any> {
+
+    public $beforeRoutesInit() {
         this.use(GlobalAcceptMimesMiddleware)
             .use(cookieParser())
             .use(compress({}))
