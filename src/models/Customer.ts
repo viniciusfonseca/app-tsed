@@ -1,12 +1,9 @@
 namespace App.Models {
 
-    export interface Customer {
-        name: string
-        email: string
-        password: string
+    export interface Customer extends User {
         address: Address
     }
-
+    
     export interface Address {
         street: string
         number: string
