@@ -41,4 +41,8 @@ describe('customer crud', () => {
         assert.equal(customers[0].name, customer['name'])
         
     }))
+
+    it('create', () => {
+
+    })
 })
