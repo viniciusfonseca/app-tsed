@@ -1,4 +1,4 @@
-import { Service, Scope, ProviderScope, registerProvider } from "@tsed/di";
+import { registerProvider } from "@tsed/di";
 import { Model, Sequelize, DataTypes } from "sequelize";
 
 class User extends Model {}
@@ -12,7 +12,7 @@ export class DBService {
     public addresses = Address
 
     async init() {
-        const sequelize = new Sequelize("sqlite::memory")
+        const sequelize = new Sequelize("sqlite::memory", { logging: false })
         await sequelize.authenticate()
 
         User.init({
