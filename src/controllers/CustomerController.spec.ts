@@ -37,12 +37,28 @@ describe('customer crud', () => {
             password: ""
         })
 
-        const { body: customers } = await request.get(`/customers`)
+        const { body: customers } = await request.get(`/customers`).expect(200)
         assert.equal(customers[0].name, customer['name'])
         
     }))
 
-    it('create', () => {
+    it('create', TestContext.inject([ CONNECTION ], async (db: DBService) => {
 
-    })
+        await request.post('/customers').send({
+            name: 'Vinicius',
+            email: 'vfonseca1@example.com',
+            address: {
+                street: "",
+                city: "",
+                number: "",
+                postalCode: "",
+                state: ""
+            },
+            password: ""
+        }).expect(200)
+
+        const customer = await db.users.findOne({ where: { email: 'vfonseca1@example.com' } })
+        assert(customer)
+
+    }))
 })
