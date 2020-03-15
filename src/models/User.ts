@@ -9,5 +9,6 @@ namespace App.Models {
         name: string
         email: string
         password: string
+        role: UserRole
     }
 }

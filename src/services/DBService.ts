@@ -16,6 +16,7 @@ export class DBService {
         await sequelize.authenticate()
 
         User.init({
+            role: { type: DataTypes.STRING },
             name: { type: DataTypes.STRING },
             email: { type: DataTypes.STRING },
             password: { type: DataTypes.STRING }

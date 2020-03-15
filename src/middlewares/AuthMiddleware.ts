@@ -15,6 +15,7 @@ export class AuthMiddleware implements IMiddleware {
     public async use(@Req() request: Request, @EndpointInfo() endpoint: EndpointInfo) {
 
         const token = request.headers['authorization']
+        const options = endpoint.get(AuthMiddleware) ?? {}
 
         try {
             const { id, expiry } = await this.jwt.decode<JWTPayload>(token)
@@ -25,6 +26,10 @@ export class AuthMiddleware implements IMiddleware {
         }
         catch {
             throw new ApiError(401, "invalid or unavailable token")
+        }
+
+        if (request['user']['role'] !== options.role) {
+            throw new ApiError(403, "access forbidden")
         }
 
     }

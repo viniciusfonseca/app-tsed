@@ -1,7 +1,9 @@
-import { Controller, Get, Inject, Post, BodyParams, PathParams, Put, Delete } from "@tsed/common";
+import { Controller, Get, Inject, Post, BodyParams, PathParams, Put, Delete, UseAuth } from "@tsed/common";
 import { CONNECTION, DBService } from "../services/DBService";
+import { AuthMiddleware } from "../middlewares/AuthMiddleware";
 
 @Controller("/customers")
+@UseAuth(AuthMiddleware, { role: "ADMIN" })
 export class CustomerController {
 
     @Inject(CONNECTION)
@@ -23,9 +25,12 @@ export class CustomerController {
 
     @Post()
     async create(
-        @BodyParams() { name, email }: App.Models.Customer
+        @BodyParams() { name, email }: Partial<App.Models.Customer>
     ) {
-        const newCustomer = await this.db.users.create({ name, email })
+        const newCustomer = await this.db.users.create({
+            name,
+            email
+        })
         return newCustomer
     }
 
