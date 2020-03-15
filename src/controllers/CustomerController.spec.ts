@@ -44,7 +44,7 @@ describe('customer crud', () => {
 
     it('create', TestContext.inject([ CONNECTION ], async (db: DBService) => {
 
-        await request.post('/customers').send({
+        const { body } = await request.post('/customers').send({
             name: 'Vinicius',
             email: 'vfonseca1@example.com',
             address: {
@@ -57,8 +57,63 @@ describe('customer crud', () => {
             password: ""
         }).expect(200)
 
-        const customer = await db.users.findOne({ where: { email: 'vfonseca1@example.com' } })
+        const customer = await db.users.findByPk(body.id)
         assert(customer)
 
+    }))
+
+    it('update', TestContext.inject([ CONNECTION ], async (db: DBService) => {
+
+        const customerCtrl: CustomerController = await TestContext.invoke(
+            CustomerController,
+            [{ token: CONNECTION, use: db }]
+        )
+
+        const customer = await customerCtrl.create({
+            name: 'Vinicius',
+            email: 'vfonseca2@example.com',
+            address: {
+                street: "",
+                city: "",
+                number: "",
+                postalCode: "",
+                state: ""
+            },
+            password: ""
+        })
+
+        const { body } = await request.put(`/customers/${customer['id']}`)
+            .send({ name: 'Fulano' })
+            .expect(200)
+        
+        assert.equal(body.name, 'Fulano')
+
+    }))
+
+    it('delete', TestContext.inject([ CONNECTION ], async (db: DBService) => {
+
+        const customerCtrl: CustomerController = await TestContext.invoke(
+            CustomerController,
+            [{ token: CONNECTION, use: db }]
+        )
+
+        const customer = await customerCtrl.create({
+            name: 'Vinicius',
+            email: 'vfonseca3@example.com',
+            address: {
+                street: "",
+                city: "",
+                number: "",
+                postalCode: "",
+                state: ""
+            },
+            password: ""
+        })
+
+        await request.delete(`/customers/${customer['id']}`)
+            .expect(200)
+
+        const customerFromDB = await db.users.findByPk(customer['id'])
+        assert(!customerFromDB)
     }))
 })

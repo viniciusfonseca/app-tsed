@@ -32,14 +32,14 @@ export class CustomerController {
     @Put("/:id")
     async update(
         @PathParams('id') id: string,
-        @BodyParams() { name, email }: App.Models.Customer
+        @BodyParams() { name, email }: Partial<App.Models.Customer>
     ) {
         const customer = await this.db.users.findByPk(+id)
         await customer.update({ name, email })
         return customer
     }
 
-    @Delete(":/id")
+    @Delete("/:id")
     async delete(
         @PathParams('id') id: string
     ) {

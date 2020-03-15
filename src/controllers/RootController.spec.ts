@@ -34,7 +34,10 @@ describe('root controller', () => {
     it('login', TestContext.inject([ CONNECTION, BCRYPT ], async (db: DBService, bcrypt: BCryptHelper) => {
 
         const rootController: RootController = await TestContext.invoke(
-            RootController, [{ token: CONNECTION, use: db }, { token: BCRYPT, use: bcrypt }]
+            RootController, [
+                { token: CONNECTION, use: db },
+                { token: BCRYPT, use: bcrypt }
+            ]
         )
 
         await rootController.register({
@@ -43,10 +46,12 @@ describe('root controller', () => {
             confirm_password: '1234'
         })
 
-        await request.post('/login').send({
+        const { body } = await request.post('/login').send({
             email: 'vfonseca1@example.com',
             password: '1234'
         })
         .expect(200)
+
+        assert.notEqual(body.token.length, 0)
     }))
 })
