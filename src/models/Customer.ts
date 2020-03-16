@@ -9,6 +9,6 @@ namespace App.Models {
         number: string
         city: string
         state: string
-        postalCode: string
+        postal_code: string
     }
 }
