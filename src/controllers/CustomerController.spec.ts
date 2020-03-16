@@ -54,7 +54,7 @@ describe('customer crud', () => {
         assert(customers.find(({ email }) => email === 'vfonseca@example.com'))
     }))
 
-    it.only('create', TestContext.inject([ CONNECTION ], async (db: DBService) => {
+    it('create', TestContext.inject([ CONNECTION ], async (db: DBService) => {
 
         const { body } = await request.post('/customers')
             .send({
@@ -205,7 +205,7 @@ describe('customer crud', () => {
 
         const customerFromDB = await db.users.findByPk(customer['id'])
         assert(!customerFromDB)
-        const addressFromDB = await db.addresses.findByPk(customer['dataValues']['address']['id'])
+        const addressFromDB = await db.addresses.findByPk(customer['address']['id'])
         assert(!addressFromDB)
     }))
 })
