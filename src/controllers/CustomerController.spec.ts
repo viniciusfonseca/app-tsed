@@ -26,14 +26,14 @@ describe('customer crud', () => {
     }))
     after(TestContext.reset)
 
-    it.only('list', TestContext.inject([ CONNECTION ], async (db: DBService) => {
+    it('list', TestContext.inject([ CONNECTION ], async (db: DBService) => {
         
         const customerCtrl: CustomerController = await TestContext.invoke(
             CustomerController,
             [{ token: CONNECTION, use: db }]
         )
 
-        const customer = await customerCtrl.create({
+        await customerCtrl.create({
             name: 'Vinicius',
             email: 'vfonseca@example.com',
             address: {
@@ -49,14 +49,13 @@ describe('customer crud', () => {
         const { body: customers } = await request.get(`/customers`)
             .set({ Authorization })
             .expect(200)
-        assert.equal(customers[0].name, customer['name'])
-        
+
+        assert(customers.find(({ email }) => email === 'vfonseca@example.com'))
     }))
 
     it('create', TestContext.inject([ CONNECTION ], async (db: DBService) => {
 
         const { body } = await request.post('/customers')
-            .set({ Authorization })
             .send({
                 name: 'Vinicius',
                 email: 'vfonseca1@example.com',

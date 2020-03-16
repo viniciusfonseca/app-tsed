@@ -1,7 +1,7 @@
 import { Middleware, Err, Res, Response, $log } from "@tsed/common";
 import { ApiError } from "../core/ApiError";
 
-@Middleware()
+// @Middleware()
 export class ErrorMiddleware {
 
     use(@Err() error: any, @Res() response: Response) {

@@ -1,9 +1,10 @@
-import { IMiddleware, Req, EndpointInfo, Request, Inject } from "@tsed/common";
+import { IMiddleware, Req, EndpointInfo, Request, Inject, Middleware } from "@tsed/common";
 import { JWTHelper, JWT } from "../services/JWTHelper";
 import { ApiError } from "../core/ApiError";
 import { JWTPayload } from "../core/JWTPayload";
 import { CONNECTION, DBService } from "../services/DBService";
 
+@Middleware()
 export class AuthMiddleware implements IMiddleware {
 
     @Inject(JWT)
