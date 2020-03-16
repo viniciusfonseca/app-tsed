@@ -40,6 +40,7 @@ export class CustomerController {
         @BodyParams() { name, email, address }: Partial<App.Models.Customer>
     ) {
         const newCustomer = await this.db.users.create({
+            role: "CUSTOMER",
             name,
             email
         })

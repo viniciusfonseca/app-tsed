@@ -3,6 +3,7 @@ import { Model, Sequelize, DataTypes } from "sequelize";
 
 class User extends Model {}
 class Address extends Model {}
+class Product extends Model {}
 
 export const CONNECTION = Symbol.for("CONNECTION")
 
@@ -31,6 +32,12 @@ export class DBService {
         }, { sequelize, modelName: 'address' })
 
         User.hasOne(Address)
+
+        Product.init({
+            name: { type: DataTypes.STRING },
+            price: { type: DataTypes.NUMBER },
+            currency: { type: DataTypes.STRING },
+        }, { sequelize, modelName: 'product' })
 
         await sequelize.sync()
     }
