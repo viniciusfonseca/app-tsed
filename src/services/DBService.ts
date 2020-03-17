@@ -11,6 +11,7 @@ export class DBService {
 
     public users = User
     public addresses = Address
+    public products = Product
 
     async init() {
         const sequelize = new Sequelize("sqlite::memory", { logging: false })

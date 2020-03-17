@@ -1,6 +1,6 @@
 namespace App.Models {
 
-    export class Product {
+    export interface Product {
         name: string
         price: number
         currency: string
