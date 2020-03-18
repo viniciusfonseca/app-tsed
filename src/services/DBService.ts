@@ -4,6 +4,7 @@ import { Model, Sequelize, DataTypes } from "sequelize";
 class User extends Model {}
 class Address extends Model {}
 class Product extends Model {}
+class Order extends Model {}
 
 export const CONNECTION = Symbol.for("CONNECTION")
 
@@ -12,6 +13,7 @@ export class DBService {
     public users = User
     public addresses = Address
     public products = Product
+    public orders = Order
 
     async init() {
         const sequelize = new Sequelize("sqlite::memory", { logging: false })
@@ -39,6 +41,11 @@ export class DBService {
             price: { type: DataTypes.NUMBER },
             currency: { type: DataTypes.STRING },
         }, { sequelize, modelName: 'product' })
+
+        Order.init({}, { sequelize, modelName: 'order' })
+
+        Order.belongsToMany(Product, { through: 'OrderProducts' })
+        Product.belongsToMany(Order, { through: 'OrderProducts' })
 
         await sequelize.sync()
     }
