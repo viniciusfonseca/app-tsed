@@ -85,10 +85,48 @@ describe('product crud', () => {
 
     it('update', TestContext.inject([ CONNECTION ], async (db: DBService) => {
 
+        const productCtrl: ProductController = await TestContext.invoke(
+            ProductController,
+            [{ token: CONNECTION, use: db }]
+        )
+
+        const product = await productCtrl.create({
+            name: 'PRODUCT 3',
+            price: 1000,
+            currency: 'BRL'
+        })
+
+        const { body: updatedProduct } = await request.put(`/products/${product['id']}`)
+            .send({ name: 'PRODUCT UPDATE', price: 2000, currency: 'USD' })
+            .set({ Authorization })
+            .expect(200)
+
+        assert.equal(updatedProduct.name, 'PRODUCT UPDATE')
+        assert.equal(updatedProduct.price, 2000)
+        assert.equal(updatedProduct.currency, 'USD')
         
     }))
 
     it('delete', TestContext.inject([ CONNECTION ], async (db: DBService) => {
+
+        const productCtrl: ProductController = await TestContext.invoke(
+            ProductController,
+            [{ token: CONNECTION, use: db }]
+        )
+
+        const product = await productCtrl.create({
+            name: 'PRODUCT 3',
+            price: 1000,
+            currency: 'BRL'
+        })
+        
+        await request.delete(`/products/${product['id']}`)
+            .set({ Authorization })
+            .expect(200)
+
+        const nonExistentProduct = await db.products.findByPk(product['id'])
+
+        assert(!nonExistentProduct)
 
     }))
 
