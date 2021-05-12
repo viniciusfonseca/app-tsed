@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "@tsed/common": "^5.44.4",
-    "@tsed/core": "^5.44.4",
+    "@tsed/core": "^5.65.7",
     "@tsed/di": "^5.44.4",
     "@tsed/testing": "^5.44.4",
     "@types/bcrypt": "^3.0.0",
